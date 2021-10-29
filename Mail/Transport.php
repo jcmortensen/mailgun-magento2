@@ -41,30 +41,20 @@ class Transport
     ) {
         if ($this->mailgunConfig->enabled()) {
             try {
-                $messageBuilder = $this->createMailgunMessage($this->parseMessage());
+                $parser = new MessageParser($subject->getMessage());
+                $messageBuilder = $this->createMailgunMessage($parser->parse());
 
-                $mailgun = new Mailgun($this->config->privateKey(), $this->getHttpClient(), $this->config->endpoint());
-                $mailgun->setApiVersion($this->config->version());
-                $mailgun->setSslEnabled($this->config->ssl());
+                $mailgun = new Mailgun($this->mailgunConfig->privateKey(), $this->getHttpClient(), $this->mailgunConfig->endpoint());
+                $mailgun->setApiVersion($this->mailgunConfig->version());
+                $mailgun->setSslEnabled($this->mailgunConfig->ssl());
 
-                $mailgun->sendMessage($this->config->domain(), $messageBuilder->getMessage(), $messageBuilder->getFiles());
+                $mailgun->sendMessage($this->mailgunConfig->domain(), $messageBuilder->getMessage(), $messageBuilder->getFiles());
             } catch (\Exception $e) {
 
             }
         } else {
             $proceed();
         }
-    }
-
-
-    /**
-     * @return array
-     */
-    protected function parseMessage()
-    {
-        $parser = new MessageParser($this->getMessage());
-
-        return $parser->parse();
     }
 
     /**
