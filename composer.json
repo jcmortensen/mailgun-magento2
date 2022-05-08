@@ -16,8 +16,8 @@
         }
     ],
     "require": {
-        "php": "^7.0",
-        "magento/framework": "101.0.*|102.0.*",
+        "php": "^7.4",
+        "magento/framework": "101.0.*|102.0.*|103.0.*",
         "magento/magento-composer-installer": "*",
         "mailgun/mailgun-php": "2.6.0",
         "php-http/guzzle6-adapter": "^1.0",
